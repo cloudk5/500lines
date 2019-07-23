@@ -1,5 +1,5 @@
-import sys, os, BaseHTTPServer
-
+import sys, os
+import http.server as BaseHTTPServer
 #-------------------------------------------------------------------------------
 
 class ServerException(Exception):
@@ -67,7 +67,10 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.send_header("Content-Length", str(len(content)))
         self.end_headers()
-        self.wfile.write(content)
+        if type(content)==type(b''):
+            self.wfile.write(content)
+        else:
+            self.wfile.write(content.encode())
 
 #-------------------------------------------------------------------------------
 
